@@ -12,10 +12,19 @@
       animation: fall linear forwards;
     }
     @keyframes fall {
-      0% { top: -60px; opacity: 0; }
-      10% { opacity: 1; }
-      100% { top: 100%; opacity: 0; }
+        0% { 
+          transform: translateY(-20px); 
+          opacity: 0; 
+        }
+        15% { 
+          opacity: 1; 
+        }
+        100% { 
+          transform: translateY(450px); /* Define uma distância física fixa para a queda */
+          opacity: 0; 
+        }
     }
+
   </style>
 </head>
 <body class="bg-slate-900 text-white font-sans overflow-hidden select-none h-screen w-screen flex flex-col items-center justify-between p-4">
@@ -182,7 +191,8 @@
 
       formulasDisponiveis.forEach((item) => {
         const btn = document.createElement('button');
-        btn.className = `w-[28%] p-2 rounded-lg text-xs font-black text-center shadow-lg border border-white/10 active:scale-95 transition-transform absolute gate-fall ${item.cor}`;
+        btn.className = `w-[28%] p-2 rounded-lg text-xs font-black text-center shadow-lg border border-white/10 active:scale-95 transition-transform absolute gate-fall top-0 ${item.cor}`;
+        btn.style.top = '0px'; // Garante que todos nasçam no topo da área de jogo
         btn.style.animationDuration = `${velocidadeQueda}s`;
         btn.textContent = item.txt;
 
