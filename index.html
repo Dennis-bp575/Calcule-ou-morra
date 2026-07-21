@@ -74,191 +74,180 @@
   </div>
 
   <script>
-    let hp = 50;
-    let score = 0;
-    let nivel = 1;
-    let tempoDecorrido = 0;
-    let drenoPorSegundo = 1;
-    let velocidadeQueda = 4; // Ajustado de 5 para 4 segundos para ficar mais dinâmico
-    
-    let loopDreno, loopGerador;
-
-    const hpDisplay = document.getElementById('hp-display');
-    const hpBar = document.getElementById('hp-bar');
-    const scoreDisplay = document.getElementById('score-display');
-    const levelDisplay = document.getElementById('level-display');
-    const gatesContainer = document.getElementById('gates-container');
-    const gameoverScreen = document.getElementById('gameover-screen');
-    const finalScore = document.getElementById('final-score');
-    const btnRestart = document.getElementById('btn-restart');
-
-    function iniciarJogo() {
-      hp = 50;
-      score = 0;
-      nivel = 1;
-      tempoDecorrido = 0;
-      drenoPorSegundo = 1;
-      velocidadeQueda = 6;
-      
-      gatesContainer.innerHTML = '';
-      gameoverScreen.classList.add('hidden');
-      atualizarInterface();
-
-      loopDreno = setInterval(processarDrenoTempo, 2000);
-      // Sincronizado: os botões caem em 4s e a próxima leva vem em 4s
-      loopGerador = setInterval(gerarPortoes, 6000); 
-      
-      gerarPortoes(); 
-    }
-
-    function processarDrenoTempo() {
-      hp -= drenoPorSegundo;
-      tempoDecorrido++;
-      score += 10; 
-
-      if (tempoDecorrido === 30) {
-        nivel = 2;
-        drenoPorSegundo = 2; 
-        velocidadeQueda = 4; 
-        alterarGerador(4000); // Gera mais rápido para acompanhar a queda
-      } else if (tempoDecorrido === 60) {
-        nivel = 3;
-        drenoPorSegundo = 3; 
-        velocidadeQueda = 3; 
-        alterarGerador(3000); // Ritmo frenético
-      }
-
-      atualizarInterface();
-
-      if (hp <= 0) {
-        finalizarJogo();
-      }
-    }
-
-    function alterarGerador(novoTempo) {
-      clearInterval(loopGerador);
-      loopGerador = setInterval(gerarPortoes, novoTempo);
-      gerarPortoes(); // Força uma geração imediata na mudança de nível
-    }
-
-    function atualizarInterface() {
-      hpDisplay.textContent = Math.max(0, hp);
-      scoreDisplay.textContent = score;
-      levelDisplay.textContent = `Nível ${nivel}`;
-
-      if (hp > 25) {
-        hpDisplay.className = "text-3xl font-black text-cyan-400 animate-pulse";
-        hpBar.className = "bg-cyan-500 h-full transition-all duration-300";
-      } else if (hp > 5) {
-        hpDisplay.className = "text-3xl font-black text-emerald-400";
-        hpBar.className = "bg-emerald-500 h-full transition-all duration-300";
-      } else {
-        hpDisplay.className = "text-3xl font-black text-red-500 animate-bounce";
-        hpBar.className = "bg-red-500 h-full transition-all duration-300";
-      }
-
-      let larguraBarra = (hp / 50) * 100;
-      hpBar.style.width = `${Math.min(100, Math.max(0, larguraBarra))}%`;
-    }
-
-    function gerarPortoes() {
-      // Remove apenas os botões antigos que já perderam a animação ou foram ignorados
-      gatesContainer.innerHTML = ''; 
-
-      let formulasDisponiveis = [];
-      
-      if (nivel === 1) {
-        formulasDisponiveis = [
-          { txt: "+1 Soldado", acao: (h) => h + 1, cor: 'bg-emerald-600' },
-          { txt: "HP +11", acao: (h) => h + 11, cor: 'bg-teal-600' },
-          { txt: "HP - 2", acao: (h) => h - 2, cor: 'bg-red-700' }
-        ];
-      } else if (nivel === 2) {
-        formulasDisponiveis = [
-          { txt: "HP + 15", acao: (h) => h + 15, cor: 'bg-emerald-600' },
-          { txt: "HP * 2", acao: (h) => h * 2, cor: 'bg-purple-600' },
-          { txt: "(HP - 2) * 2", acao: (h) => (h - 2) * 2, cor: 'bg-indigo-600' }
-        ];
-      } else {
-        formulasDisponiveis = [
-          { txt: "(HP - 3) * 7", acao: (h) => (h - 3) * 7, cor: 'bg-violet-600' },
-          { txt: "(HP + 5) * 2", acao: (h) => (h + 5) * 2, cor: 'bg-fuchsia-600' },
-          { txt: "HP / 2", acao: (h) => Math.round(h / 2), cor: 'bg-amber-700' }
-        ];
-      }
-
-      formulasDisponiveis.sort(() => Math.random() - 0.5);
-
-      // Adicione o parâmetro 'index' no forEach
-      formulasDisponiveis.forEach((item, index) => {
-          const btn = document.createElement('button');
-          
-          // CORREÇÃO 1: Adicionado 'cursor-pointer' para garantir a captura e 'select-none'
-          btn.className = `w-[28%] p-2 rounded-lg text-xl font-black text-center shadow-lg border border-white/10 active:scale-95 transition-all absolute gate-fall top-0 z-50 btn-dinamico cursor-pointer select-none ${item.cor}`;
-          
-          // CALCULA A POSIÇÃO HORIZONTAL COM ESPAÇAMENTO SEGURO
-          // Mudado para 36% para os 3 botões de 28% ocuparem bem a tela sem sumir na direita
-          const posicaoHorizontal = index * 36; 
-          btn.style.left = `${posicaoHorizontal}%`;
-          
-          btn.style.top = '0px'; 
-          btn.style.animationDuration = `${velocidadeQueda}s`;
-          btn.textContent = item.txt;
-          btn.id = `btn-dinamico-${index}`;
-      
-          // 1. CAPTURA O CLIQUE E FAZ O CÁLCULO
-          btn.addEventListener('click', (evento) => {
-              // CORREÇÃO 2: Impede que a animação interfira no clique no frame exato
-              evento.preventDefault();
-              evento.stopPropagation();
-      
-              let hpAtual = hp; 
-              let novoHp = item.acao(hpAtual);        
-              hp = novoHp;
-              
-              // Atualiza o texto/vida na tela se você tiver uma função para isso, ex: atualizarPlacar();
-      
-              // --- LÓGICA DE CONGELAMENTO COM INDEX ---
-              const todosOsBotoes = document.querySelectorAll('.btn-dinamico');
-              todosOsBotoes.forEach((b) => {
-                  // Trava a animação de queda no ar instantaneamente!
-                  b.style.animationPlayState = 'paused';
-                  b.classList.add('pointer-events-none'); // Desativa cliques futuros
-      
-                  if (b.id !== `btn-dinamico-${index}`) {
-                      b.classList.add('opacity-10', 'grayscale'); // Apaga os outros
-                  } else {
-                        // Destaca o botão que você clicou de verde ou vermelho
-                        const aumentou = novoHp > hpAtual;
-                        b.classList.add('scale-110', 'ring-4');
-                        
-                        // Adiciona a cor do anel baseada no resultado
-                        if (aumentou) {
-                            b.classList.add('ring-green-400');
-                        } else {
-                            b.classList.add('ring-red-500');
-                        }
-                  }
-              });
-          });
+        let hp = 50;
+        let score = 0;
+        let nivel = 1;
+        let tempoDecorrido = 0;
+        let drenoPorSegundo = 1;
+        let velocidadeQueda = 4; // Ajustado de 5 para 4 segundos para ficar mais dinâmico
         
-          btn.addEventListener('animationend', () => {
-              btn.remove();
-          });
+        let loopDreno, loopGerador;
+    
+        const hpDisplay = document.getElementById('hp-display');
+        const hpBar = document.getElementById('hp-bar');
+        const scoreDisplay = document.getElementById('score-display');
+        const levelDisplay = document.getElementById('level-display');
+        const gatesContainer = document.getElementById('gates-container');
+        const gameoverScreen = document.getElementById('gameover-screen');
+        const finalScore = document.getElementById('final-score');
+        const btnRestart = document.getElementById('btn-restart');
+    
+        function iniciarJogo() {
+            hp = 50;
+            score = 0;
+            nivel = 1;
+            tempoDecorrido = 0;
+            drenoPorSegundo = 1;
+            velocidadeQueda = 6;
+            
+            gatesContainer.innerHTML = '';
+            gameoverScreen.classList.add('hidden');
+            atualizarInterface();
       
-          gatesContainer.appendChild(btn);
-      });
-
-    function finalizarJogo() {
-      clearInterval(loopDreno);
-      clearInterval(loopGerador);
+            loopDreno = setInterval(processarDrenoTempo, 2000);
+            // Sincronizado: os botões caem em 4s e a próxima leva vem em 4s
+            loopGerador = setInterval(gerarPortoes, 6000); 
+            
+            gerarPortoes(); 
+        }
+    
+        function processarDrenoTempo() {
+            hp -= drenoPorSegundo;
+            tempoDecorrido++;
+            score += 10; 
       
-      finalScore.textContent = score;
-      gameoverScreen.classList.remove('hidden');
-    }
-
-    btnRestart.addEventListener('click', iniciarJogo);
-    iniciarJogo();
+            if (tempoDecorrido === 30) {
+              nivel = 2;
+              drenoPorSegundo = 2; 
+              velocidadeQueda = 4; 
+              alterarGerador(4000); // Gera mais rápido para acompanhar a queda
+            } else if (tempoDecorrido === 60) {
+              nivel = 3;
+              drenoPorSegundo = 3; 
+              velocidadeQueda = 3; 
+              alterarGerador(3000); // Ritmo frenético
+            }
+      
+            atualizarInterface();
+      
+            if (hp <= 0) {
+              finalizarJogo();
+            }
+        }
+    
+        function alterarGerador(novoTempo) {
+            clearInterval(loopGerador);
+            loopGerador = setInterval(gerarPortoes, novoTempo);
+            gerarPortoes(); // Força uma geração imediata na mudança de nível
+        }
+    
+        function atualizarInterface() {
+              hpDisplay.textContent = Math.max(0, hp);
+              scoreDisplay.textContent = score;
+              levelDisplay.textContent = `Nível ${nivel}`;
+        
+              if (hp > 25) {
+                hpDisplay.className = "text-3xl font-black text-cyan-400 animate-pulse";
+                hpBar.className = "bg-cyan-500 h-full transition-all duration-300";
+              } else if (hp > 5) {
+                hpDisplay.className = "text-3xl font-black text-emerald-400";
+                hpBar.className = "bg-emerald-500 h-full transition-all duration-300";
+              } else {
+                hpDisplay.className = "text-3xl font-black text-red-500 animate-bounce";
+                hpBar.className = "bg-red-500 h-full transition-all duration-300";
+              }
+        
+              let larguraBarra = (hp / 50) * 100;
+              hpBar.style.width = `${Math.min(100, Math.max(0, larguraBarra))}%`;
+        }
+    
+        function gerarPortoes() {
+            // Remove apenas os botões antigos que já perderam a animação ou foram ignorados
+            gatesContainer.innerHTML = ''; 
+            let formulasDisponiveis = [];
+            if (nivel === 1) {
+                formulasDisponiveis = [
+                  { txt: "+1 Soldado", acao: (h) => h + 1, cor: 'bg-emerald-600' },
+                  { txt: "HP +11", acao: (h) => h + 11, cor: 'bg-teal-600' },
+                  { txt: "HP - 2", acao: (h) => h - 2, cor: 'bg-red-700' }
+                ];
+            } else if (nivel === 2) {
+                formulasDisponiveis = [
+                  { txt: "HP + 15", acao: (h) => h + 15, cor: 'bg-emerald-600' },
+                  { txt: "HP * 2", acao: (h) => h * 2, cor: 'bg-purple-600' },
+                  { txt: "(HP - 2) * 2", acao: (h) => (h - 2) * 2, cor: 'bg-indigo-600' }
+                ];
+            } else {
+                formulasDisponiveis = [
+                  { txt: "(HP - 3) * 7", acao: (h) => (h - 3) * 7, cor: 'bg-violet-600' },
+                  { txt: "(HP + 5) * 2", acao: (h) => (h + 5) * 2, cor: 'bg-fuchsia-600' },
+                  { txt: "HP / 2", acao: (h) => Math.round(h / 2), cor: 'bg-amber-700' }
+                ];
+            }
+    
+            formulasDisponiveis.sort(() => Math.random() - 0.5);
+            // Adicione o parâmetro 'index' no forEach
+            formulasDisponiveis.forEach((item, index) => {
+                const btn = document.createElement('button');
+                // CORREÇÃO 1: Adicionado 'cursor-pointer' para garantir a captura e 'select-none'
+                btn.className = `w-[28%] p-2 rounded-lg text-xl font-black text-center shadow-lg border border-white/10 active:scale-95 transition-all absolute gate-fall top-0 z-50 btn-dinamico cursor-pointer select-none ${item.cor}`;
+                // CALCULA A POSIÇÃO HORIZONTAL COM ESPAÇAMENTO SEGURO
+                // Mudado para 36% para os 3 botões de 28% ocuparem bem a tela sem sumir na direita
+                const posicaoHorizontal = index * 36; 
+                btn.style.left = `${posicaoHorizontal}%`;
+                  
+                btn.style.top = '0px'; 
+                btn.style.animationDuration = `${velocidadeQueda}s`;
+                btn.textContent = item.txt;
+                btn.id = `btn-dinamico-${index}`;
+          
+                // 1. CAPTURA O CLIQUE E FAZ O CÁLCULO
+                btn.addEventListener('click', (evento) => {
+                    // CORREÇÃO 2: Impede que a animação interfira no clique no frame exato
+                    evento.preventDefault();
+                    evento.stopPropagation();
+                    let hpAtual = hp; 
+                    let novoHp = item.acao(hpAtual);        
+                    hp = novoHp;
+                    const todosOsBotoes = document.querySelectorAll('.btn-dinamico');
+                    todosOsBotoes.forEach((b) => {
+                        // Trava a animação de queda no ar instantaneamente!
+                        b.style.animationPlayState = 'paused';
+                        b.classList.add('pointer-events-none'); // Desativa cliques futuros
+          
+                        if (b.id !== `btn-dinamico-${index}`) {
+                            b.classList.add('opacity-10', 'grayscale'); // Apaga os outros
+                        } else {
+                            // Destaca o botão que você clicou de verde ou vermelho
+                            const aumentou = novoHp > hpAtual;
+                            b.classList.add('scale-110', 'ring-4');
+                            // Adiciona a cor do anel baseada no resultado
+                            if (aumentou) {
+                                    b.classList.add('ring-green-400');
+                                } else {
+                                    b.classList.add('ring-red-500');
+                            }
+                        }    
+                    });
+                });
+            
+                btn.addEventListener('animationend', () => {
+                    btn.remove();
+                });
+          
+                gatesContainer.appendChild(btn);
+            });
+        }
+        function finalizarJogo() {
+            clearInterval(loopDreno);
+            clearInterval(loopGerador);
+            
+            finalScore.textContent = score;
+            gameoverScreen.classList.remove('hidden');
+        }
+    
+        btnRestart.addEventListener('click', iniciarJogo);
+        iniciarJogo();
   </script>
 </body>
 </html>
