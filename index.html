@@ -166,13 +166,13 @@
             gatesContainer.innerHTML = ''; 
             let formulasDisponiveis = [
               // GANHOS
-              { txt: `+ ${nivel * 5} HP`, acao: (h) => h + (nivel * 5), cor: 'bg-green-600' },
+              { txt: `+ ${nivel * 5} HP`, acao: (h) => h + (nivel * 5), cor: 'bg-red-600' },
               { txt: "+ 25% HP", acao: (h) => Math.round(h * 1.25), cor: 'bg-emerald-600' },
               { txt: `(HP + ${nivel}) * 2`, acao: (h) => (h + nivel) * 2, cor: 'bg-teal-600' },
               // PERDAS
-              { txt: `- ${nivel * 4} HP`, acao: (h) => Math.max(0, h - (nivel * 4)), cor: 'bg-red-600' },
-              { txt: "- 30% HP", acao: (h) => Math.round(h * 0.70), cor: 'bg-rose-600' },
-              { txt: `(HP - ${nivel}) * 3`, acao: (h) => Math.max(0, (h - nivel) * 3), cor: 'bg-orange-600' }
+              { txt: `- ${nivel * 5} HP`, acao: (h) => Math.max(0, h - (nivel * 5)), cor: 'bg-red-600' },
+              { txt: "- 25% HP", acao: (h) => Math.round(h * 0.75), cor: 'bg-emerald-600' },
+              { txt: `(HP - ${nivel}) * 2`, acao: (h) => Math.max(0, (h - nivel) * 2), cor: 'bg-teal-600' }
             ];
 
     
