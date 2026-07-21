@@ -182,7 +182,7 @@
                 { txt: `(HP * 0.5) + ${dificuldadeNivel}`, acao: (h) => Math.round((h * 0.5) + dificuldadeNivel), cor: 'bg-indigo-600' },
                 { txt: `HP - (${dificuldadeNivel} * ${dificuldadeNivel})`, acao: (h) => Math.max(0, h - (dificuldadeNivel * dificuldadeNivel)), cor: 'bg-sky-600' }
             ];
-            
+            let rodadaResolvida = false;
             formulasDisponiveis.sort(() => Math.random() - 0.5);
             // Adicione o parâmetro 'index' no forEach
             formulasDisponiveis.forEach((item, index) => {
@@ -230,8 +230,16 @@
                 });
             
                 btn.addEventListener('animationend', () => {
+                    // Se a rodada terminou e o jogador NÃO clicou em nada, e NINGUÉM foi punido ainda...
+                    if (!rodadaResolvida) {
+                        rodadaResolvida = true;  
+                        let punicao = nivel * 20;
+                        hp = Math.max(0, hp - punicao); 
+                    }
+        
                     btn.remove();
                 });
+
           
                 gatesContainer.appendChild(btn);
             });
