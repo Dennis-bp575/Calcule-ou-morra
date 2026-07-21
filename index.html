@@ -228,9 +228,16 @@
                   if (b.id !== `btn-dinamico-${index}`) {
                       b.classList.add('opacity-10', 'grayscale'); // Apaga os outros
                   } else {
-                      // Destaca o botão que você clicou de verde ou vermelho
-                      const aumentou = novoHp > hpAtual;
-                      b.classList.add('scale-110', 'ring-4', aumentou ? 'ring-green-400' : 'ring-red-500');
+                        // Destaca o botão que você clicou de verde ou vermelho
+                        const aumentou = novoHp > hpAtual;
+                        b.classList.add('scale-110', 'ring-4');
+                        
+                        // Adiciona a cor do anel baseada no resultado
+                        if (aumentou) {
+                            b.classList.add('ring-green-400');
+                        } else {
+                            b.classList.add('ring-red-500');
+                        }
                   }
               });
           });
