@@ -164,18 +164,25 @@
         function gerarPortoes() {
             // Remove apenas os botões antigos que já perderam a animação ou foram ignorados
             gatesContainer.innerHTML = ''; 
+            // Exemplo com nível 2 -> Dificuldade 4
+            const dificuldadeNivel = nivel * 2; 
+            
             let formulasDisponiveis = [
-              // GANHOS
-              { txt: `+ ${nivel * 5} HP`, acao: (h) => h + (nivel * 5), cor: 'bg-red-600' },
-              { txt: "+ 25% HP", acao: (h) => Math.round(h * 1.25), cor: 'bg-emerald-600' },
-              { txt: `(HP + ${nivel}) * 2`, acao: (h) => (h + nivel) * 2, cor: 'bg-teal-600' },
-              // PERDAS
-              { txt: `- ${nivel * 5} HP`, acao: (h) => Math.max(0, h - (nivel * 5)), cor: 'bg-red-600' },
-              { txt: "- 25% HP", acao: (h) => Math.round(h * 0.75), cor: 'bg-emerald-600' },
-              { txt: `(HP - ${nivel}) * 2`, acao: (h) => Math.max(0, (h - nivel) * 2), cor: 'bg-teal-600' }
+                // GANHOS (5 opções)
+                { txt: `(HP * 2) - ${dificuldadeNivel}`, acao: (h) => (h * 2) - dificuldadeNivel, cor: 'bg-rose-700' }, // ⚠️ GANHO NO BOTÃO VERMELHO
+                { txt: `HP + (${dificuldadeNivel} * 3)`, acao: (h) => h + (dificuldadeNivel * 3), cor: 'bg-indigo-600' },
+                { txt: `(HP + 10) * 1.5`, acao: (h) => Math.round((h + 10) * 1.5), cor: 'bg-emerald-600' }, 
+                { txt: `(100 / HP) * ${dificuldadeNivel}`, acao: (h) => Math.round((100 / h) * dificuldadeNivel), cor: 'bg-amber-600' },
+                { txt: `HP - (${dificuldadeNivel} - 15)`, acao: (h) => h - (dificuldadeNivel - 15), cor: 'bg-sky-600' },
+              
+                // 🔴 FÓRMULAS DE PERDA (Vida Desce)
+                { txt: `(HP - ${dificuldadeNivel}) * 2`, acao: (h) => Math.max(0, (h - dificuldadeNivel) * 2), cor: 'bg-rose-700' }, // ⚠️ PERDA NO BOTÃO VERMELHO
+                { txt: `HP - (${dificuldadeNivel} * 4)`, acao: (h) => Math.max(0, h - (dificuldadeNivel * 4)), cor: 'bg-emerald-600' }, // ⚠️ PERDA NO BOTÃO VERDE
+                { txt: `(HP / 2) + ${dificuldadeNivel}`, acao: (h) => Math.round((20 / 2) + dificuldadeNivel), cor: 'bg-amber-600' },
+                { txt: `(HP * 0.5) + ${dificuldadeNivel}`, acao: (h) => Math.round((h * 0.5) + dificuldadeNivel), cor: 'bg-indigo-600' },
+                { txt: `HP - (${dificuldadeNivel} * ${dificuldadeNivel})`, acao: (h) => Math.max(0, h - (dificuldadeNivel * dificuldadeNivel)), cor: 'bg-sky-600' }
             ];
-
-    
+            
             formulasDisponiveis.sort(() => Math.random() - 0.5);
             // Adicione o parâmetro 'index' no forEach
             formulasDisponiveis.forEach((item, index) => {
