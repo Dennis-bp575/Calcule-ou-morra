@@ -189,28 +189,27 @@
 
       formulasDisponiveis.sort(() => Math.random() - 0.5);
 
-      formulasDisponiveis.forEach((item) => {
-        const btn = document.createElement('button');
-        btn.className = `w-[28%] p-2 rounded-lg text-xs font-black text-center shadow-lg border border-white/10 active:scale-95 transition-transform absolute gate-fall top-0 ${item.cor}`;
-        btn.style.top = '0px'; // Garante que todos nasçam no topo da área de jogo
-        btn.style.animationDuration = `${velocidadeQueda}s`;
-        btn.textContent = item.txt;
-
-        // Evento que remove o elemento do HTML assim que ele sai da tela
-        btn.addEventListener('animationend', () => {
-          btn.remove();
-        });
-
-        btn.addEventListener('pointerdown', () => {
-          hp = item.acao(hp); 
-          score += 50;        
-          atualizarInterface();
-          gatesContainer.innerHTML = ''; 
+      // Adicione o parâmetro 'index' no forEach
+      formulasDisponiveis.forEach((item, index) => {
+          const btn = document.createElement('button');
+          btn.className = `w-[28%] p-2 rounded-lg text-xs font-black text-center shadow-lg border border-white/10 active:scale-95 transition-transform absolute gate-fall top-0 ${item.cor}`;
           
-          if (hp <= 0) {
-            finalizarJogo();
-          }
-        });
+          // CALCULA A POSIÇÃO HORIZONTAL (Ex: 0%, 33%, 66%)
+          const posicaoHorizontal = index * 33; 
+          btn.style.left = `${posicaoHorizontal}%`;
+          
+          btn.style.top = '0px'; 
+          btn.style.animationDuration = `${velocidadeQueda}s`;
+          btn.textContent = item.txt;
+      
+          btn.addEventListener('animationend', () => {
+            btn.remove();
+          });
+          
+          // Não esqueça do appendChild aqui para adicionar na tela
+          container.appendChild(btn); 
+      });
+
 
         gatesContainer.appendChild(btn);
       });
