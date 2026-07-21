@@ -29,6 +29,31 @@
 </head>
 <body class="bg-slate-900 text-white font-sans overflow-hidden select-none h-screen w-screen flex flex-col items-center justify-between p-4">
 
+  
+  <!-- Tela de Boas-Vindas / Start -->
+  <div id="tela-start" class="fixed inset-0 bg-slate-950 flex flex-col items-center justify-content-center z-[100] p-4 text-white">
+    <h1 class="text-4xl font-black mb-6 tracking-wider text-amber-400">MATH FALLOUT</h1>
+    
+    <div class="w-full max-w-xs flex flex-col gap-4">
+      <label class="text-sm font-bold text-slate-400 uppercase">Insira suas Iniciais (Fliperama):</label>
+      <input 
+        id="nome-jogador" 
+        type="text" 
+        maxlength="7" 
+        placeholder="Ex: DAVI454" 
+        class="bg-slate-900 border-2 border-slate-700 rounded-lg p-3 text-center text-2xl font-black uppercase tracking-widest focus:outline-none focus:border-amber-400 text-amber-300"
+      />
+      
+      <button 
+        id="btn-start" 
+        class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-4 rounded-lg text-xl shadow-lg transition-transform active:scale-95 cursor-pointer"
+      >
+        START GAME
+      </button>
+    </div>
+  </div>
+
+  
   <!-- TOPO: Painel de Pontuação e Status -->
   <div class="w-full max-w-md flex justify-between items-center bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg z-10">
     <div>
@@ -91,6 +116,33 @@
         const gameoverScreen = document.getElementById('gameover-screen');
         const finalScore = document.getElementById('final-score');
         const btnRestart = document.getElementById('btn-restart');
+
+        // Variáveis Globais de Controle
+        let apelidoJogador = "";
+        let jogoAtivo = false;
+        
+        const telaStart = document.getElementById('tela-start');
+        const inputNome = document.getElementById('nome-jogador');
+        const btnStart = document.getElementById('btn-start');
+  
+        btnStart.addEventListener('click', () => {
+          // Pega o nome tirando espaços e jogando para Letras Maiúsculas
+          const nomeDigitado = inputNome.value.trim().toUpperCase();
+          
+          // Validação simples: Não deixa jogar sem nome
+          if (nomeDigitado === "") {
+            alert("Por favor, digite seu apelido de piloto!");
+            return;
+          }
+          
+          // Guarda o nome globalmente para usar no envio do ranking no final
+          apelidoJogador = nomeDigitado;
+          jogoAtivo = true;
+          // Esconde a tela de start usando classes do Tailwind
+          telaStart.classList.add('hidden');
+          iniciarJogo(); // Aquela função que cria os 3 botões caindo
+        });
+    
     
         function iniciarJogo() {
             hp = 20;
