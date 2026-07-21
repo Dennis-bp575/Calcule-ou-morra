@@ -164,26 +164,17 @@
         function gerarPortoes() {
             // Remove apenas os botões antigos que já perderam a animação ou foram ignorados
             gatesContainer.innerHTML = ''; 
-            let formulasDisponiveis = [];
-            if (nivel === 1) {
-                formulasDisponiveis = [
-                  { txt: "+1 Soldado", acao: (h) => h + 1, cor: 'bg-emerald-600' },
-                  { txt: "HP +11", acao: (h) => h + 11, cor: 'bg-teal-600' },
-                  { txt: "HP - 2", acao: (h) => h - 2, cor: 'bg-red-700' }
-                ];
-            } else if (nivel === 2) {
-                formulasDisponiveis = [
-                  { txt: "HP + 15", acao: (h) => h + 15, cor: 'bg-emerald-600' },
-                  { txt: "HP * 2", acao: (h) => h * 2, cor: 'bg-purple-600' },
-                  { txt: "(HP - 2) * 2", acao: (h) => (h - 2) * 2, cor: 'bg-indigo-600' }
-                ];
-            } else {
-                formulasDisponiveis = [
-                  { txt: "(HP - 3) * 7", acao: (h) => (h - 3) * 7, cor: 'bg-violet-600' },
-                  { txt: "(HP + 5) * 2", acao: (h) => (h + 5) * 2, cor: 'bg-fuchsia-600' },
-                  { txt: "HP / 2", acao: (h) => Math.round(h / 2), cor: 'bg-amber-700' }
-                ];
-            }
+            let formulasDisponiveis = [
+              // GANHOS
+              { txt: `+ ${nivel * 5} HP`, acao: (h) => h + (nivel * 5), cor: 'bg-green-600' },
+              { txt: "+ 25% HP", acao: (h) => Math.round(h * 1.25), cor: 'bg-emerald-600' },
+              { txt: `(HP + ${nivel}) * 2`, acao: (h) => (h + nivel) * 2, cor: 'bg-teal-600' },
+              // PERDAS
+              { txt: `- ${nivel * 4} HP`, acao: (h) => Math.max(0, h - (nivel * 4)), cor: 'bg-red-600' },
+              { txt: "- 30% HP", acao: (h) => Math.round(h * 0.70), cor: 'bg-rose-600' },
+              { txt: `(HP - ${nivel}) * 3`, acao: (h) => Math.max(0, (h - nivel) * 3), cor: 'bg-orange-600' }
+            ];
+
     
             formulasDisponiveis.sort(() => Math.random() - 0.5);
             // Adicione o parâmetro 'index' no forEach
