@@ -302,7 +302,44 @@
             
             finalScore.textContent = score;
             gameoverScreen.classList.remove('hidden');
+            salvarPontuacao(apelidoJogador, score);
         }
+
+        async function salvarPontuacao(nomeJogador, pontosMarcados) {
+        // ⚠️ Substitua com as suas credenciais reais quando criar sua conta gratuita no Supabase
+        const SUPABASE_URL = 'https://zqdjkazwinzmmtwgpycn.supabase.co';
+        const SUPABASE_KEY = 'process.env.SUPABASE_KEY';
+      
+        try {
+          // Faz um envio POST padrão (Adiciona sempre uma nova linha, igual fliperama)
+          const resposta = await fetch(`${SUPABASE_URL}/rest/v1/ranking`, {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${SUPABASE_KEY}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal' // Diz ao banco para processar rápido sem devolver dados pesados
+            },
+            body: JSON.stringify({ 
+              nome: nomeJogador, 
+              pontos: pontosMarcados 
+            })
+          });
+      
+          if (resposta.ok) {
+            console.log(`Pontuação de ${nomeJogador} (${pontosMarcados}s) salva com sucesso no fliperama global!`);
+            
+            // BÔNUS PEDAGÓGICO: Assim que salvar com sucesso, puxa o ranking atualizado
+            carregarTopRanking(); 
+          } else {
+            console.error("O banco recusou os dados. Verifique a tabela.");
+          }
+        } catch (erro) {
+          console.error("Erro de conexão com o banco de dados:", erro);
+        }
+      }
+
+
     
         btnRestart.addEventListener('click', iniciarJogo);
         iniciarJogo();
