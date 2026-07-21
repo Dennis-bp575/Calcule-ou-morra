@@ -192,7 +192,7 @@
       // Adicione o parâmetro 'index' no forEach
       formulasDisponiveis.forEach((item, index) => {
           const btn = document.createElement('button');
-          btn.className = `w-[28%] p-2 rounded-lg text-xl font-black text-center shadow-lg border border-white/10 active:scale-95 transition-transform absolute gate-fall top-0 z-50 ${item.cor}`;
+          btn.className = `w-[28%] p-2 rounded-lg text-xl font-black text-center shadow-lg border border-white/10 active:scale-95 transition-transform absolute gate-fall top-0 z-50 btn-dinamico ${item.cor}`;
           
           // CALCULA A POSIÇÃO HORIZONTAL (Ex: 0%, 33%, 66%)
           const posicaoHorizontal = index * 33; 
@@ -201,10 +201,28 @@
           btn.style.top = '0px'; 
           btn.style.animationDuration = `${velocidadeQueda}s`;
           btn.textContent = item.txt;
-      
+          btn.id = `btn-dinamico-${index}`;
+
+          // 1. CAPTURA O CLIQUE E FAZ O CÁLCULO
+          btn.addEventListener('click', () => {
+              let hpAtual = hp; 
+              let novoHp = item.acao(hpAtual);        
+              hp = novoHp;
+              // --- LÓGICA DE CONGELAMENTO COM INDEX ---
+              const todosOsBotoes = document.querySelectorAll('.btn-dinamico');
+              todosOsBotoes.forEach((b, idx) => {
+                  if (idx !== index) {
+                    b.classList.add('pointer-events-none', 'opacity-20'); 
+                  } else {
+                    b.classList.add('pointer-events-none', 'scale-105'); 
+              }
+          });
+        
           btn.addEventListener('animationend', () => {
             btn.remove();
           });
+
+          
 
         gatesContainer.appendChild(btn);
       });
