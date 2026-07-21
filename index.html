@@ -98,15 +98,15 @@
       nivel = 1;
       tempoDecorrido = 0;
       drenoPorSegundo = 1;
-      velocidadeQueda = 4;
+      velocidadeQueda = 6;
       
       gatesContainer.innerHTML = '';
       gameoverScreen.classList.add('hidden');
       atualizarInterface();
 
-      loopDreno = setInterval(processarDrenoTempo, 1000);
+      loopDreno = setInterval(processarDrenoTempo, 2000);
       // Sincronizado: os botões caem em 4s e a próxima leva vem em 4s
-      loopGerador = setInterval(gerarPortoes, 4000); 
+      loopGerador = setInterval(gerarPortoes, 6000); 
       
       gerarPortoes(); 
     }
@@ -116,16 +116,16 @@
       tempoDecorrido++;
       score += 10; 
 
-      if (tempoDecorrido === 15) {
+      if (tempoDecorrido === 30) {
         nivel = 2;
         drenoPorSegundo = 2; 
-        velocidadeQueda = 3; 
-        alterarGerador(3000); // Gera mais rápido para acompanhar a queda
-      } else if (tempoDecorrido === 35) {
+        velocidadeQueda = 4; 
+        alterarGerador(4000); // Gera mais rápido para acompanhar a queda
+      } else if (tempoDecorrido === 60) {
         nivel = 3;
         drenoPorSegundo = 3; 
-        velocidadeQueda = 2; 
-        alterarGerador(2000); // Ritmo frenético
+        velocidadeQueda = 3; 
+        alterarGerador(3000); // Ritmo frenético
       }
 
       atualizarInterface();
