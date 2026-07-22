@@ -408,10 +408,23 @@
           }
         }
 
-
-    
+        // Configura o botão de jogar novamente para quando der Game Over
         btnRestart.addEventListener('click', iniciarJogo);
-        iniciarJogo();
+
+        // O evento do botão de START da tela de login deve ser o único a disparar o jogo no início:
+        btnStart.addEventListener('click', () => {
+            const nomeDigitado = inputNome.value.trim().toUpperCase();
+            if (nomeDigitado === "") {
+                alert("Digite seu nome de piloto!");
+                return;
+            }
+            apelidoJogador = nomeDigitado;
+            telaStart.classList.add('hidden'); // Esconde a tela de login
+            
+            iniciarJogo(); // Agora sim, o jogo só começa por comando humano!
+        });
+ 
+
   </script>
 </body>
 </html>
