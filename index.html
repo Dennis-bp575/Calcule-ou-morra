@@ -314,44 +314,44 @@
         }
 
         async function salvarPontuacao(nomeJogador, pontosMarcados) {
-        // ⚠️ Substitua com as suas credenciais reais quando criar sua conta gratuita no Supabase
-        const SUPABASE_URL = 'https://zqdjkazwinzmmtwgpycn.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_s3vcDX41fY9DA48qO8k80g_cZTOckMg';
-      
-        try {
-          // Faz um envio POST padrão (Adiciona sempre uma nova linha, igual fliperama)
-          const resposta = await fetch(`${SUPABASE_URL}/rest/v1/ranking`, {
-            method: 'POST',
-            headers: {
-              'apikey': SUPABASE_KEY,
-              'Authorization': `Bearer ${SUPABASE_KEY}`,
-              'Content-Type': 'application/json',
-              'Prefer': 'return=minimal' // Diz ao banco para processar rápido sem devolver dados pesados
-            },
-            body: JSON.stringify({ 
-              nome: nomeJogador, 
-              pontos: pontosMarcados 
-            })
-          });
-      
-          if (resposta.ok) {
-            console.log(`Pontuação de ${nomeJogador} (${pontosMarcados}s) salva com sucesso no fliperama global!`);
-            
-            // BÔNUS PEDAGÓGICO: Assim que salvar com sucesso, puxa o ranking atualizado
-            carregarTopRanking(); 
-          } else {
-            console.error("O banco recusou os dados. Verifique a tabela.");
-          }
-        } catch (erro) {
-          console.error("Erro de conexão com o banco de dados:", erro);
-        }
+            // ⚠️ Substitua com as suas credenciais reais quando criar sua conta gratuita no Supabase
+            const SUPABASE_URL = 'https://zqdjkazwinzmmtwgpycn.supabase.co';
+            const SUPABASE_KEY = 'sb_publishable_s3vcDX41fY9DA48qO8k80g_cZTOckMg';
+          
+            try {
+              // Faz um envio POST padrão (Adiciona sempre uma nova linha, igual fliperama)
+              const resposta = await fetch(`${SUPABASE_URL}/rest/v1/ranking`, {
+                method: 'POST',
+                headers: {
+                  'apikey': SUPABASE_KEY,
+                  'Authorization': `Bearer ${SUPABASE_KEY}`,
+                  'Content-Type': 'application/json',
+                  'Prefer': 'return=minimal' // Diz ao banco para processar rápido sem devolver dados pesados
+                },
+                body: JSON.stringify({ 
+                  nome: nomeJogador, 
+                  pontos: pontosMarcados 
+                })
+              });
+          
+              if (resposta.ok) {
+                console.log(`Pontuação de ${nomeJogador} (${pontosMarcados}s) salva com sucesso no fliperama global!`);
+                
+                // BÔNUS PEDAGÓGICO: Assim que salvar com sucesso, puxa o ranking atualizado
+                carregarTopRanking(); 
+              } else {
+                console.error("O banco recusou os dados. Verifique a tabela.");
+              }
+            } catch (erro) {
+              console.error("Erro de conexão com o banco de dados:", erro);
+            }
       }
 
     
       async function carregarTopRanking() {
           // Credenciais (As mesmas que usar na função de salvar)
-          const SUPABASE_URL = 'https://supabase.co';
-          const SUPABASE_KEY = 'sua-chave-anonima-publica';
+          const SUPABASE_URL = 'https://zqdjkazwinzmmtwgpycn.supabase.co';
+          const SUPABASE_KEY = 'sb_publishable_s3vcDX41fY9DA48qO8k80g_cZTOckMg';
           
           const listaContenedor = document.getElementById('lista-ranking');
           if (!listaContenedor) return;
