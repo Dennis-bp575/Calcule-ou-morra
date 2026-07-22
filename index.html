@@ -307,7 +307,8 @@
         function finalizarJogo() {
             clearInterval(loopDreno);
             clearInterval(loopGerador);
-            
+            const botoesSobreviventes = document.querySelectorAll('.btn-dinamico');
+            botoesSobreviventes.forEach(botao => botao.remove());
             finalScore.textContent = score;
             gameoverScreen.classList.remove('hidden');
             salvarPontuacao(apelidoJogador, score);
