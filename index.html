@@ -39,8 +39,8 @@
       <input 
         id="nome-jogador" 
         type="text" 
-        maxlength="7" 
-        placeholder="Ex: DAVI454" 
+        maxlength="3" 
+        placeholder="Ex: DAV" 
         class="bg-slate-900 border-2 border-slate-700 rounded-lg p-3 text-center text-2xl font-black uppercase tracking-widest focus:outline-none focus:border-amber-400 text-amber-300"
       />
       
@@ -133,22 +133,27 @@
         const btnStart = document.getElementById('btn-start');
   
         btnStart.addEventListener('click', () => {
-          // Pega o nome tirando espaços e jogando para Letras Maiúsculas
-          const nomeDigitado = inputNome.value.trim().toUpperCase();
+            const nomeDigitado = inputNome.value.trim().toUpperCase();
+            
+            // 1. VALIDAÇÃO CLÁSSICA: O nome DEVE ter exatamente 3 letras
+            if (nomeDigitado.length !== 3) {
+              alert("O nome de piloto precisa ter exatamente 3 letras! (Ex: DAV, LEO)");
+              return;
+            }
           
-          // Validação simples: Não deixa jogar sem nome
-          if (nomeDigitado === "") {
-            alert("Por favor, digite seu apelido de piloto!");
-            return;
-          }
-          
-          // Guarda o nome globalmente para usar no envio do ranking no final
-          apelidoJogador = nomeDigitado;
-          jogoAtivo = true;
-          // Esconde a tela de start usando classes do Tailwind
-          telaStart.classList.add('hidden');
-          iniciarJogo(); // Aquela função que cria os 3 botões caindo
+            // 2. FILTRO ANTI-NÚMERO: Garante que são apenas letras de A a Z
+            const apenasLetras = /^[A-Z]+$/;
+            if (!apenasLetras.test(nomeDigitado)) {
+              alert("Use apenas letras de A a Z para o seu recorde!");
+              return;
+            }
+            
+            // Se passou nas duas travas, salva o nome e inicia o jogo
+            apelidoJogador = nomeDigitado;
+            telaStart.classList.add('hidden');
+            iniciarJogo();
         });
+
     
     
         function iniciarJogo() {
