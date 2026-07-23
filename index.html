@@ -318,16 +318,26 @@
                     });
                 });
             
-                btn.addEventListener('animationend', () => {
-                    // Se a rodada terminou e o jogador NÃO clicou em nada, e NINGUÉM foi punido ainda...
-                    if (!rodadaResolvida) {
-                        rodadaResolvida = true;  
-                        let punicao = nivel * 20;
-                        hp = Math.max(0, hp - punicao); 
+                setTimeout(() => {
+                    // Verificação de segurança: Só pune se o botão AINDA existir na tela 
+                    // (Se o jogador clicou, o botão já foi congelado ou removido)
+                    if (document.body.contains(btn)) {
+                        if (!rodadaResolvida) {
+                            rodadaResolvida = true; // Evita que os outros 2 botões punam na mesma rodada
+                            let punicao = nivel * 20;
+                            hp = Math.max(0, hp - punicao);
+                            console.log(`Punição por tempo! HP reduzido em ${punicao}. HP atual: ${hp}`);
+                            if (hp <= 0) {
+                                finalizarJogo();
+                            } else {
+                                atualizarInterface()
+                            }
+                        }
+                        
+                        // Remove o botão da tela após o tempo da queda expirar
+                        btn.remove();
                     }
-                    console.log("BOTÃO CAIU NO CHÃO");
-                    btn.remove();
-                });
+                }, velocidadeQueda * 1000); // Converte os segundos da queda para milissegundos (ex: 3s * 1000 = 3000ms)
 
           
                 gatesContainer.appendChild(btn);
