@@ -113,7 +113,7 @@
         let tempoDecorrido = 0;
         let drenoPorSegundo = 1;
         let velocidadeQueda = 4; // Ajustado de 5 para 4 segundos para ficar mais dinâmico
-        
+        let gameover = false;
         let loopDreno, loopGerador;
     
         const hpDisplay = document.getElementById('hp-display');
@@ -227,6 +227,10 @@
         }
     
         function gerarPortoes() {
+            if gameover {
+                return;
+            }
+            
             // Remove apenas os botões antigos que já perderam a animação ou foram ignorados
             gatesContainer.innerHTML = ''; 
             // Exemplo com nível 2 -> Dificuldade 4
@@ -310,6 +314,7 @@
             });
         }
         function finalizarJogo() {
+            gameover = true
             clearInterval(loopDreno);
             clearInterval(loopGerador);
             const botoesSobreviventes = document.querySelectorAll('.btn-dinamico');
