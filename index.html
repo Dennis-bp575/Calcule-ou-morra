@@ -243,18 +243,19 @@
             
             let formulasDisponiveis = [
                 // GANHOS (5 opções)
-                { txt: `(HP * 2) - ${dificuldadeNivel}`, acao: (h) => (h * 2) - dificuldadeNivel, cor: 'bg-rose-700' }, // ⚠️ GANHO NO BOTÃO VERMELHO
-                { txt: `HP + (${dificuldadeNivel} * 3)`, acao: (h) => h + (dificuldadeNivel * 3), cor: 'bg-indigo-600' },
-                { txt: `(HP + 10) * 1.5`, acao: (h) => Math.round((h + 10) * 1.5), cor: 'bg-emerald-600' }, 
-                { txt: `(100 / HP) * ${dificuldadeNivel}`, acao: (h) => Math.round((100 / h) * dificuldadeNivel), cor: 'bg-amber-600' },
+                // 1. Ganho fixo puro
+                { txt: `HP + (${dificuldadeNivel} * 3)`, acao: (h) => h + (dificuldadeNivel * 3), cor: 'bg-rose-700' },
                 { txt: `HP - (${dificuldadeNivel} - 15)`, acao: (h) => h - (dificuldadeNivel - 15), cor: 'bg-sky-600' },
+                { txt: `HP + 10 + ${dificuldadeNivel}`, acao: (h) => h + 10 + dificuldadeNivel, cor: 'bg-emerald-600' },
+                { txt: `HP - (-${dificuldadeNivel} * 2)`, acao: (h) => h + (dificuldadeNivel * 2), cor: 'bg-amber-600' },
+                { txt: `HP + ${dificuldadeNivel + 8}`, acao: (h) => h + (dificuldadeNivel + 8), cor: 'bg-indigo-600' }
               
                 // 🔴 FÓRMULAS DE PERDA (Vida Desce)
-                { txt: `(HP - ${dificuldadeNivel}) * 2`, acao: (h) => Math.max(0, (h - dificuldadeNivel) * 2), cor: 'bg-rose-700' }, // ⚠️ PERDA NO BOTÃO VERMELHO
-                { txt: `HP - (${dificuldadeNivel} * 4)`, acao: (h) => Math.max(0, h - (dificuldadeNivel * 4)), cor: 'bg-emerald-600' }, // ⚠️ PERDA NO BOTÃO VERDE
-                { txt: `(HP / 2) + ${dificuldadeNivel}`, acao: (h) => Math.round((20 / 2) + dificuldadeNivel), cor: 'bg-amber-600' },
-                { txt: `(HP * 0.5) + ${dificuldadeNivel}`, acao: (h) => Math.round((h * 0.5) + dificuldadeNivel), cor: 'bg-indigo-600' },
-                { txt: `HP - (${dificuldadeNivel} * ${dificuldadeNivel})`, acao: (h) => Math.max(0, h - (dificuldadeNivel * dificuldadeNivel)), cor: 'bg-sky-600' }
+                { txt: `HP - (${dificuldadeNivel} * 4)`, acao: (h) => Math.max(0, h - (dificuldadeNivel * 4)), cor: 'bg-emerald-600' },
+                { txt: `HP - (${dificuldadeNivel} * ${dificuldadeNivel})`, acao: (h) => Math.max(0, h - (dificuldadeNivel * dificuldadeNivel)), cor: 'bg-sky-600' },
+                { txt: `HP - (5 + ${dificuldadeNivel})`, acao: (h) => Math.max(0, h - (5 + dificuldadeNivel)), cor: 'bg-amber-600' },
+                { txt: `HP + (-${dificuldadeNivel} * 3)`, acao: (h) => Math.max(0, h - (dificuldadeNivel * 3)), cor: 'bg-indigo-600' },
+                { txt: `HP - ${dificuldadeNivel + 6}`, acao: (h) => Math.max(0, h - (dificuldadeNivel + 6)), cor: 'bg-rose-700' }
             ];
             let rodadaResolvida = false;
             formulasDisponiveis.sort(() => Math.random() - 0.5);
