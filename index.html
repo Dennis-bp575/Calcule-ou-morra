@@ -248,7 +248,7 @@
                 { txt: `HP - (${dificuldadeNivel} - 15)`, acao: (h) => h - (dificuldadeNivel - 15), cor: 'bg-sky-600' },
                 { txt: `HP + 10 + ${dificuldadeNivel}`, acao: (h) => h + 10 + dificuldadeNivel, cor: 'bg-emerald-600' },
                 { txt: `HP - (-${dificuldadeNivel} * 2)`, acao: (h) => h + (dificuldadeNivel * 2), cor: 'bg-amber-600' },
-                { txt: `HP + ${dificuldadeNivel + 8}`, acao: (h) => h + (dificuldadeNivel + 8), cor: 'bg-indigo-600' }
+                { txt: `HP + ${dificuldadeNivel + 8}`, acao: (h) => h + (dificuldadeNivel + 8), cor: 'bg-indigo-600' },
               
                 // 🔴 FÓRMULAS DE PERDA (Vida Desce)
                 { txt: `HP - (${dificuldadeNivel} * 4)`, acao: (h) => Math.max(0, h - (dificuldadeNivel * 4)), cor: 'bg-emerald-600' },
