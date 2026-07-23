@@ -239,23 +239,37 @@
             // Remove apenas os botões antigos que já perderam a animação ou foram ignorados
             gatesContainer.innerHTML = ''; 
             // Exemplo com nível 2 -> Dificuldade 4
-            const dificuldadeNivel = nivel * 2; 
+            const nivelC = nivel * 3; 
             
             let formulasDisponiveis = [
-                // GANHOS (5 opções)
-                // 1. Ganho fixo puro
-                { txt: `HP + (${dificuldadeNivel} * 3)`, acao: (h) => h + (dificuldadeNivel * 3), cor: 'bg-rose-700' },
-                { txt: `HP - (${dificuldadeNivel} - 15)`, acao: (h) => h - (dificuldadeNivel - 15), cor: 'bg-sky-600' },
-                { txt: `HP + 10 + ${dificuldadeNivel}`, acao: (h) => h + 10 + dificuldadeNivel, cor: 'bg-emerald-600' },
-                { txt: `HP - (-${dificuldadeNivel} * 2)`, acao: (h) => h + (dificuldadeNivel * 2), cor: 'bg-amber-600' },
-                { txt: `HP + ${dificuldadeNivel + 8}`, acao: (h) => h + (dificuldadeNivel + 8), cor: 'bg-indigo-600' },
-              
-                // 🔴 FÓRMULAS DE PERDA (Vida Desce)
-                { txt: `HP - (${dificuldadeNivel} * 4)`, acao: (h) => Math.max(0, h - (dificuldadeNivel * 4)), cor: 'bg-emerald-600' },
-                { txt: `HP - (${dificuldadeNivel} * ${dificuldadeNivel})`, acao: (h) => Math.max(0, h - (dificuldadeNivel * dificuldadeNivel)), cor: 'bg-sky-600' },
-                { txt: `HP - (5 + ${dificuldadeNivel})`, acao: (h) => Math.max(0, h - (5 + dificuldadeNivel)), cor: 'bg-amber-600' },
-                { txt: `HP + (-${dificuldadeNivel} * 3)`, acao: (h) => Math.max(0, h - (dificuldadeNivel * 3)), cor: 'bg-indigo-600' },
-                { txt: `HP - ${dificuldadeNivel + 6}`, acao: (h) => Math.max(0, h - (dificuldadeNivel + 6)), cor: 'bg-rose-700' }
+               // ==========================================
+              // 🟢 PRIMEIRA METADE: Começam com "-" mas GANHAM vida (Menos com Menos = Mais)
+              // ==========================================
+              { txt: "HP - (Nível * 2 - Nível * 3)", acao: (h) => h - (nivelC * 2 - nivelC * 3), cor: "bg-rose-700" },
+              { txt: "HP - (Nível - 10 - Nível)", acao: (h) => h - (nivelC - 10 - nivelC), cor: "bg-amber-600" },
+              { txt: "HP - ((Nível * 4) - (Nível * 5))", acao: (h) => h - ((nivelC * 4) - (nivelC * 5)), cor: "bg-sky-600" },
+              { txt: "HP - (Nível - Nível - 15)", acao: (h) => h - (nivelC - nivelC - 15), cor: "bg-indigo-600" },
+              { txt: "HP - ((Nível / 2) - Nível)", acao: (h) => h - ((nivelC / 2) - nivelC), cor: "bg-emerald-600" },
+              { txt: "HP + (Nível - Nível + 20)", acao: (h) => h + (nivelC - nivelC + 20), cor: "bg-rose-700" }, // Soma pura fixa (+20)
+              { txt: "HP - (Nível * 3 - Nível * 5)", acao: (h) => h - (nivelC * 3 - nivelC * 5), cor: "bg-amber-600" },
+              { txt: "HP - ((Nível + 8) - (Nível + 20))", acao: (h) => h - ((nivelC + 8) - (nivelC + 20)), cor: "bg-sky-600" },
+              { txt: "HP - (Nível * 2 - Nível * 2 - 30)", acao: (h) => h - (nivelC * 2 - nivelC * 2 - 30), cor: "bg-indigo-600" },
+              { txt: "HP - ((Nível - 5) - (Nível + 5))", acao: (h) => h - ((nivelC - 5) - (nivelC + 5)), cor: "bg-emerald-600" },
+            
+              // ==========================================
+              // 🔴 SEGUNDA METADE: Começam com "+" mas PERDEM vida (Mais com Menos = Menos)
+              // ==========================================
+              { txt: "HP + (Nível * 2 - Nível * 3)", acao: (h) => Math.max(0, h + (nivelC * 2 - nivelC * 3)), cor: "bg-rose-700" },
+              { txt: "HP + (Nível - 10 - Nível)", acao: (h) => Math.max(0, h + (nivelC - 10 - nivelC)), cor: "bg-amber-600" },
+              { txt: "HP + ((Nível * 4) - (Nível * 5))", acao: (h) => Math.max(0, h + ((nivelC * 4) - (nivelC * 5))), cor: "bg-sky-600" },
+              { txt: "HP + (Nível - Nível - 15)", acao: (h) => Math.max(0, h + (nivelC - nivelC - 15)), cor: "bg-indigo-600" },
+              { txt: "HP + ((Nível / 2) - Nível)", acao: (h) => Math.max(0, h + ((nivelC / 2) - nivelC)), cor: "bg-emerald-600" },
+              { txt: "HP - (Nível - Nível + 20)", acao: (h) => Math.max(0, h - (nivelC - nivelC + 20)), cor: "bg-rose-700" }, // Subtração pura fixa (-20)
+              { txt: "HP + (Nível * 3 - Nível * 5)", acao: (h) => Math.max(0, h + (nivelC * 3 - nivelC * 5)), cor: "bg-amber-600" },
+              { txt: "HP + ((Nível + 8) - (Nível + 20))", acao: (h) => Math.max(0, h + ((nivelC + 8) - (nivelC + 20))), cor: "bg-sky-600" },
+              { txt: "HP + (Nível * 2 - Nível * 2 - 30)", acao: (h) => Math.max(0, h + (nivelC * 2 - nivelC * 2 - 30)), cor: "bg-indigo-600" },
+              { txt: "HP + ((Nível - 5) - (Nível + 5))", acao: (h) => Math.max(0, h + ((nivelC - 5) - (nivelC + 5))), cor: "bg-emerald-600" }
+
             ];
             let rodadaResolvida = false;
             formulasDisponiveis.sort(() => Math.random() - 0.5);
