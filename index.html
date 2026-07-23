@@ -401,10 +401,15 @@
         
             if (resposta.ok) {
               const dadosRanking = await resposta.json();
-              
               // Limpa a mensagem de "Carregando..."
               listaContenedor.innerHTML = '';
-        
+
+              const top3 = dadosRanking.slice(0, 3);
+              const entrouNoPodio = top3.some(jogador => jogador.nome === apelidoJogador);
+              if (entrouNoPodio) {
+                  tocarSomVitoriaRetro(); // Dispara a melodia dos campeões!
+              }
+              
               // Se o banco estiver totalmente vazio no primeiro teste
               if (dadosRanking.length === 0) {
                 listaContenedor.innerHTML = `<li class="text-slate-500 text-center">Nenhum recorde ainda!</li>`;
@@ -439,6 +444,47 @@
           }
         }
 
+        function tocarSomVitoriaRetro() {
+            // 1. Cria o contexto de áudio do navegador
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+            const ctx = new AudioContext();
+          
+            // As frequências das notas musicais que vão subir (Efeito Arpejo)
+            // [Dó, Mi, Sol, Dó mais alto]
+            const notas = [261.63, 329.63, 392.00, 523.25];
+            const duracaoNota = 0.12; // Fração de segundo por nota
+          
+            notas.forEach((frequencia, index) => {
+              // Cria o oscilador (quem gera a onda sonora)
+              const oscilador = ctx.createOscillator();
+              // Cria o controle de volume (ganho) para evitar estouro de som
+              const controleVolume = ctx.createGain();
+          
+              // Tipo de onda 'square' (quadrada) dá o timbre clássico do Nintendinho/Arcade
+              oscilador.type = 'square';
+              oscilador.frequency.value = frequencia;
+          
+              // Conecta os fios virtuais: som -> volume -> caixas de som
+              oscilador.connect(controleVolume);
+              controleVolume.connect(ctx.destination);
+          
+              // Calcula o tempo exato em que cada nota deve começar a tocar
+              const tempoInicio = ctx.currentTime + (index * duracaoNota);
+              
+              // Configura o volume para sumir suavemente no final de cada nota (fade-out rápido)
+              controleVolume.gain.setValueAtTime(0.15, tempoInicio); // Volume em 15%
+              controleVolume.gain.exponentialRampToValueAtTime(0.0001, tempoInicio + duracaoNota);
+          
+              // Liga e desliga o oscilador nos tempos programados
+              oscilador.start(tempoInicio);
+              oscilador.stop(tempoInicio + duracaoNota);
+            });
+        }
+
+
+
+    
         // Configura o botão de jogar novamente para quando der Game Over
         btnRestart.addEventListener('click', iniciarJogo);
 
