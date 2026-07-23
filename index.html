@@ -172,6 +172,11 @@
         }
     
         function processarDrenoTempo() {
+            if (hp <= 0) {
+                finalizarJogo();
+                return;
+            }
+          
             hp -= drenoPorSegundo;
             tempoDecorrido++;
             score += 10; 
