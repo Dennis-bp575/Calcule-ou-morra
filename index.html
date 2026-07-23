@@ -245,16 +245,16 @@
                // ==========================================
               // 🟢 PRIMEIRA METADE: Começam com "-" mas GANHAM vida (Menos com Menos = Mais)
               // ==========================================
-              { txt: "HP - (Nível * 2 - Nível * 3)", acao: (h) => h - (nivelC * 2 - nivelC * 3), cor: "bg-rose-700" },
-              { txt: "HP - (Nível - 10 - Nível)", acao: (h) => h - (nivelC - 10 - nivelC), cor: "bg-amber-600" },
-              { txt: "HP - ((Nível * 4) - (Nível * 5))", acao: (h) => h - ((nivelC * 4) - (nivelC * 5)), cor: "bg-sky-600" },
-              { txt: "HP - (Nível - Nível - 15)", acao: (h) => h - (nivelC - nivelC - 15), cor: "bg-indigo-600" },
-              { txt: "HP - ((Nível / 2) - Nível)", acao: (h) => h - ((nivelC / 2) - nivelC), cor: "bg-emerald-600" },
-              { txt: "HP + (Nível - Nível + 20)", acao: (h) => h + (nivelC - nivelC + 20), cor: "bg-rose-700" }, // Soma pura fixa (+20)
-              { txt: "HP - (Nível * 3 - Nível * 5)", acao: (h) => h - (nivelC * 3 - nivelC * 5), cor: "bg-amber-600" },
-              { txt: "HP - ((Nível + 8) - (Nível + 20))", acao: (h) => h - ((nivelC + 8) - (nivelC + 20)), cor: "bg-sky-600" },
-              { txt: "HP - (Nível * 2 - Nível * 2 - 30)", acao: (h) => h - (nivelC * 2 - nivelC * 2 - 30), cor: "bg-indigo-600" },
-              { txt: "HP - ((Nível - 5) - (Nível + 5))", acao: (h) => h - ((nivelC - 5) - (nivelC + 5)), cor: "bg-emerald-600" },
+              { txt: "HP - (Nível x 6 - Nível x 9 )", acao: (h) => h - (nivelC * 2 - nivelC * 3), cor: "bg-rose-700" },
+              { txt: "HP-(3x Nível - 10 - 3x Nível)", acao: (h) => h - (nivelC - 10 - nivelC), cor: "bg-amber-600" },
+              { txt: "HP-((Nível x12) -(Nível x15))", acao: (h) => h - ((nivelC * 4) - (nivelC * 5)), cor: "bg-sky-600" },
+              { txt: "HP-(3x Nível - 3x Nível - 15)", acao: (h) => h - (nivelC - nivelC - 15), cor: "bg-indigo-600" },
+              { txt: "HP-((3 x Nível/2)- 3 x Nível)", acao: (h) => h - ((nivelC / 2) - nivelC), cor: "bg-emerald-600" },
+              { txt: "HP+(3 x Nível-3 x Nível + 20)", acao: (h) => h + (nivelC - nivelC + 20), cor: "bg-rose-700" }, // Soma pura fixa (+20)
+              { txt: "HP - (Nível x 9 - Nível x 15)", acao: (h) => h - (nivelC * 3 - nivelC * 5), cor: "bg-amber-600" },
+              { txt: "HP-((3xNível+8)-(3xNível+20))", acao: (h) => h - ((nivelC + 8) - (nivelC + 20)), cor: "bg-sky-600" },
+              { txt: "HP-(Nível x6 - Nível x6 - 30)", acao: (h) => h - (nivelC * 2 - nivelC * 2 - 30), cor: "bg-indigo-600" },
+              { txt: "HP-((3xNível-5)- (3xNível+5))", acao: (h) => h - ((nivelC - 5) - (nivelC + 5)), cor: "bg-emerald-600" },
             
               // ==========================================
               // 🔴 SEGUNDA METADE: Começam com "+" mas PERDEM vida (Mais com Menos = Menos)
